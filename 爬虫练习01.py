@@ -1,0 +1,199 @@
+import re
+import requests
+import os
+# string = '狗的英文：dog，猫的英文：cat'
+# reg_str = re.compile(r"[\u4e00-\u9fa5]+")
+# print(re.findall(reg_str,string))
+# text = "hello world!"
+# match = re.match(r"hello",text)
+#
+# if match:
+#     print("匹配成功：",match.group())
+# else:
+#     print("未找到匹配")
+# print(re.search("www","www.baidu.com").span())
+# print(re.search("com","www.baidu.com").span())
+# phone = "2004-959-559 # 这是一个国外电话"
+# num = re.sub(r"#.*$","",phone)
+# print("电话号码是：",num)
+#
+# num = re.sub(r"\D","",phone)
+# print("电话号码是:",num)
+# s = "abc,abc,defg,dds"
+# print(re.split("\W+",s))
+
+
+
+# match_obj = re.match("t.o","too")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+#
+# match_obj = re.match("葫芦娃[12]","葫芦娃1")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# match_obj = re.match("\W","_")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+# match_obj = re.match("t.*o","to")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# match_obj = re.match("t.+o","trsdfo")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# match_obj = re.match("https?","http")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+# match_obj = re.match("ht{1,3}p","httttp")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+
+# match_obj = re.match("^\d","1abc")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# match_obj = re.match(".*\d$","2asdfa3")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# match_obj = re.match("^\d.*[^47]$","2asdfaa")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+#
+# fruit_list = ["apple","banana","orage","pear","peach"]
+#
+# for value in fruit_list:
+#     match_obj = re.match("banana|pear",value)
+#     if match_obj:
+#         result = match_obj.group()
+#         print("我想吃的水果是：",result)
+#     else:
+#         print("")
+#
+# match_obj = re.match("[a-zA-Z0-9_]{4,20}@(163|126|qq)\.com","hello@163.com")
+# if match_obj:
+#     result = match_obj.group(0)
+#     type = match_obj.group(1)
+#     print(type)
+#     print(result)
+#
+#
+#
+# else:
+#     print("不是邮箱号")
+#
+#
+#
+# match_obj = re.match("(qq:)([1-9]\d{4,11})","qq:88776655")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+#
+#     result1 = match_obj.group(1)
+#     print(result1)
+#
+#     result2 = match_obj.group(2)
+#     print(result2)
+# else:
+#     print("匹配失败")
+#
+#
+# match_obj = re.match("<([a-zA-Z1-6]+)>.*</\\1>","<html>hh</div>")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+
+# match_obj = re.match("<(?P<name1>[a-zA-Z1-6]+)><(?P<name2>[a-zA-Z1-6]+)>.*</(?P=name2)></(?P=name1)>","<html><h1>www.baidu.cn</h1></html>")
+# if match_obj:
+#     result = match_obj.group()
+#     print(result)
+# else:
+#     print("匹配失败")
+"""
+1爬取网易云的榜单
+2对获取的格式进行格式化处理
+3爬取音乐播放地址和下载地址
+4清楚歌曲之中的非法字符，然后对os读写操作
+
+"""
+url = "https://music.163.com/discover"
+headers = {
+    "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"}
+s = "_iuqxldmzr_=32; _ntes_nnid=13b916105bbb6ae0d7fc1d4fe51714a0,1754203007667; _ntes_nuid=13b916105bbb6ae0d7fc1d4fe51714a0; NMTID=00ORxfsy4_wppPxjkCUsBezrTWceQgAAAGYbqWsFA; WEVNSM=1.0.0; WNMCID=cimaeq.1754203012404.01.0; __snaker__id=IIactFNhFBzOlPdl; ntes_utid=tid._.f%252B40bgGeesVBUlFVUEODhCi8iDfgX89D._.0; sDeviceId=YD-9ibme%2FnyaGlAUgBABELC0Xi8yHO0XosW; WM_TID=BUBhLfuaUzpBBQVBFBeWgD252XKwZ3Ie; __remember_me=true; ntes_kaola_ad=1; MUSIC_U=00D3682BA2AD1A36DE3282379DA9D4190C9FB112FD7C1BDB8B6D4ADB52835D83797E6891526432D9CE30F9643F9FB3EC3DF4BA9ADC82C7B93B56E945943E1FC8EB93AE87F2FBC1B958278AA03204FCCD54BAC4212F5B09417042FC8D8BC9A64A01DAFB8C3F08A2615EB5EAA7501B530C11474B60116581A6FFF4B10AB046BE6DAA9A6FA286050FA68585DA4C57C92C4DC0179521B7A5FD6CE836165762C596E2D66BCAB95AC473ACC3405BBEE875E6D98C2DB803E5801AC6D2B1B17D81FD545A2DD9D5F4C45A03A4A9EA768A0B1E3BC6CC0356264A18FA3237961FDF9763DBDDDE3E379E29450EA469083EE8A253533A5FB22CCF4769EBA60AB647AFE29D491C406F3FB5C71848058C1FAE38E05061C07F7799DAC3EB7D842CFB8556870872B3CA58B8CC7481CD406D88AE146A6C54057857313EAB4021E4A067E84270A0079270985FDB984EC1D6D153A71BD9A9E171B9E2FA053DF1F4B589AE1FE42F52292352B0D12C2ABD8BD882BAE888A52B51DE7E9F91DE6C541445DF699CCE06EF8A726B8B7D6A4A4AFF3E2B00350C4FAAE15FB4; _ga=GA1.1.1825966596.1755254103; _ga_EPDQHDTJH5=GS2.1.s1755254102$o1$g0$t1755254490$j60$l0$h0; JSESSIONID-WYYY=RC5TRuUH%2Bjn4UFDxW3j0GMbYxJyXDOVtjRk43NKtUVM2SpBueNk61q21AvOkr%2FY8ridjAq5H5Jm%2FFz0vwB0UebmjymGZh%5CADXOX%2FuM5TS%5C%5CB940xo%5CKNg%5Co5%2BIFYrGSRRWfoO1KHBroqjW9%5COcfTh%2BOdIvzxOWwcf8ub7%2BPs5vp%2FYpix%3A1779699490890; Hm_lvt_1483fb4774c02a30ffa6f0e2945e9b70=1779697691; HMACCOUNT=FF4C57C432B9F3BB; __csrf=523dace44b0862b5e93a35f9624e3e34; __csrf=523dace44b0862b5e93a35f9624e3e34; Hm_lpvt_1483fb4774c02a30ffa6f0e2945e9b70=1779697695; WM_NI=z9eq8h5VB6SbZi3MG4igcP99MXP1caXFoUNm9A2VhEvCrpA0ptHALh%2BtUkN8b87IfqangirWz%2BewwbCk2OJju8pVvFcUqj3KP0zty%2B6HaIW1yMg4W5LXHd9oBMnWlmqbOWs%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6ee9ad760e9a9aab7b663a2b88ba6c15e828f9eadc2218890f8a9f53e94e8fbb0e92af0fea7c3b92abae7ab92bb64f78a8ed7d26a9ab7fdaec640abb9adb1bc338f88a0d2e26b9c9aa1b6cd67fb9ffeb7eb4fb69dbe91c43cb4ac88a2cf64e9ac9b8ccd34a2e8f9aae57ba3b2a98af15dbaf5ab98f66a81b5feb0c962b7e8c0b7f54ea18bbf8bb24194f0b695fc21f698afaad63bbb93a9d5d63f90888885bc658293a2b8ef67b3be81b8f237e2a3"
+cookies = {cookie.split("=")[0]:cookie.split("=")[-1] for cookie in s.split(";")}
+response = requests.get(url,headers=headers,cookies=cookies)
+# print(response.content.decode())
+# print(response.text)
+wyy = {}
+# print(type(wyy))
+music = response.text
+sum = re.findall(r'<a\shref="/discover/toplist\W?id=(.*?)"\sclass="msk"\stitle="(.*?)"></a>',music)
+# s = <a href="/discover/toplist?id=19723756" class="msk" title="飙升榜"></a>
+wyy = {k:v for k,v in sum }
+print(wyy)
+
+# print(response.content.decode())
+print(wyy)
+bangdan_id = input("请输入榜单id：")
+for i in wyy.values():
+    filename = '网易云音乐' +i +'\\'
+    if not os.path.exists(filename):
+        os.makedirs(filename)
+
+    url = "https://music.163.com/discover/toplist"
+    headers = {
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+    }
+    l = "_iuqxldmzr_=32; _ntes_nnid=13b916105bbb6ae0d7fc1d4fe51714a0,1754203007667; _ntes_nuid=13b916105bbb6ae0d7fc1d4fe51714a0; NMTID=00ORxfsy4_wppPxjkCUsBezrTWceQgAAAGYbqWsFA; WEVNSM=1.0.0; WNMCID=cimaeq.1754203012404.01.0; __snaker__id=IIactFNhFBzOlPdl; ntes_utid=tid._.f%252B40bgGeesVBUlFVUEODhCi8iDfgX89D._.0; sDeviceId=YD-9ibme%2FnyaGlAUgBABELC0Xi8yHO0XosW; WM_TID=BUBhLfuaUzpBBQVBFBeWgD252XKwZ3Ie; __remember_me=true; ntes_kaola_ad=1; MUSIC_U=00D3682BA2AD1A36DE3282379DA9D4190C9FB112FD7C1BDB8B6D4ADB52835D83797E6891526432D9CE30F9643F9FB3EC3DF4BA9ADC82C7B93B56E945943E1FC8EB93AE87F2FBC1B958278AA03204FCCD54BAC4212F5B09417042FC8D8BC9A64A01DAFB8C3F08A2615EB5EAA7501B530C11474B60116581A6FFF4B10AB046BE6DAA9A6FA286050FA68585DA4C57C92C4DC0179521B7A5FD6CE836165762C596E2D66BCAB95AC473ACC3405BBEE875E6D98C2DB803E5801AC6D2B1B17D81FD545A2DD9D5F4C45A03A4A9EA768A0B1E3BC6CC0356264A18FA3237961FDF9763DBDDDE3E379E29450EA469083EE8A253533A5FB22CCF4769EBA60AB647AFE29D491C406F3FB5C71848058C1FAE38E05061C07F7799DAC3EB7D842CFB8556870872B3CA58B8CC7481CD406D88AE146A6C54057857313EAB4021E4A067E84270A0079270985FDB984EC1D6D153A71BD9A9E171B9E2FA053DF1F4B589AE1FE42F52292352B0D12C2ABD8BD882BAE888A52B51DE7E9F91DE6C541445DF699CCE06EF8A726B8B7D6A4A4AFF3E2B00350C4FAAE15FB4; _ga=GA1.1.1825966596.1755254103; _ga_EPDQHDTJH5=GS2.1.s1755254102$o1$g0$t1755254490$j60$l0$h0; __csrf=523dace44b0862b5e93a35f9624e3e34; __csrf=523dace44b0862b5e93a35f9624e3e34; JSESSIONID-WYYY=vciprwtri0q8eKhxXeNEqZU8Vcf%2F%2Blwcb7ule4pn%2Far%5CxZ%5CRpZuZd2itRN8DJ6ePvCv1%5CWIrsDzzvWSFUUlJGOUKw0TaKaxBFSpZY9S8pjc1l3%5Cd0UgBDxeEUWpwG0iRrhUXsY2qEl3RHhZ6R%5CAYJDKq0YvSVoFEeEUzxnCWORJkD%2BQm%3A1779870848056; Hm_lvt_1483fb4774c02a30ffa6f0e2945e9b70=1779697691,1779869048; HMACCOUNT=FF4C57C432B9F3BB; WM_NI=LvxAzsg3Xo6gQhuYPZNHcIx1StgOuMxg1%2FWy8BJwblntmcgc8vBFFe5cNJeatmZQR%2Fbzje9CpiTyU3wk3k8Htp4lFUMBr6WSgrkrgML34I1hrLeFoGyn0Yj4%2BApDZbQHbGk%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6ee94f870b395fe85ef53f3ef8eb3d15e939f9f83c67f95b78eacec64f7aa9988d62af0fea7c3b92a90aab8a2f979a5ed9890b56d93b8bbbad3528e98adaafb3b91aca9b0f847bcb9ffd0d673fc9e8698e168aeaca384e669fcaa8ea7c56ff7bd82abe86bb8b396b2d125a2a6a686bc49b4b79c9ad839b5b5fd8cbb44b8b0fc8dc55f8f9ebed7d659a5aea593e64790edfcaab464b294aba7ee4dbbb200bae940e99fc0a5d96a9398aea8ea37e2a3; Hm_lpvt_1483fb4774c02a30ffa6f0e2945e9b70=1779869311"
+
+    cookies = {cookie.split("=")[0]:cookie.split("=")[-1] for cookie in l.split(";")}
+    response = requests.get(url,headers=headers,cookies=cookies)
+    text = response.text
+    num = int(input("请输入你要取多少首歌曲"))
+    a = re.findall('<li><a href="/song\?id=(.*?)">(.*?)</a></li>',text,re.S)[:num]
+
+    for i in a:
+        id = i[0]
+        name = i[-1]
+        music_url = f"http://music.163.com/song/media/outer/url?id={id}.mp3"
+        music_content = requests.get(music_url,headers=headers).content
+        cleaned_title = re.sub(r'[\/*?:"<>|]','',name)
+
+        with open(os.path.join(filename,f"{cleaned_title}.mp3"),'wb')as file:
+            file.write(music_content)
+        print(f"{wyy[bangdan_id]}中的{cleaned_title}.mp3下载成功")
