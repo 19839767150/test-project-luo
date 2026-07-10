@@ -1,0 +1,13 @@
+# Python 缓存文件 (不用上传)
+__pycache__/
+*.py[cod]
+
+# PyCharm 编辑器配置 (不用上传)
+.idea/
+
+# 虚拟环境 (如果以后建了 venv 文件夹也不用上传)
+venv/
+env/
+
+# 数据库文件 (如果是 sqlite3 就不用传，MySQL 的话通常也不传数据本身)
+db.sqlite3

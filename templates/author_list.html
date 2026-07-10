@@ -1,0 +1,36 @@
+ {% extends 'home.html' %}
+ {% block content %}
+      <a href="{% url 'author_add' %}" class="btn btn-success pull-left">添加作者</a>
+ <h1 class="text-center">作者列表</h1>
+
+ <a href="{% url 'author_add' %}" class="btn btn-success pull-left">添加出版社
+</a>
+ <table class="table table-hover table-striped">
+
+      <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>联系方式</th>
+                <th>地址</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author_query in author_queryset %}
+                <tr>
+                    <td>{{ author_query.pk }}</td>
+                    <td>{{ author_query.name }}</td>
+                    <td>{{ author_query.age }}</td>
+                    <td>{{ author_query.authordetail.phone }}</td>
+                    <td>{{ author_query.authordetail.addr }}</td>
+                    <td>
+                        <a href="{% url 'author_edit' author_id=author_query.pk %}" class="btn btn-primary btn-xs">编辑</a>
+                        <a href="{% url 'author_delete' delete_id=author_query.pk %}" class="btn btn-danger  btn-xs">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ {% endblock %}
